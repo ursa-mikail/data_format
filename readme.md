@@ -1,4 +1,8 @@
 
+
+Parallelism, asyn request (flexible, multiplex targeted data transmission) and chunking (targeting data frames): intelligent reconfiguration
+Data: schema, data blocks, e.g. style, code, data (image, text, video, audio)
+
 Data types must be tagged for proper management, e.g. if the data is in {}
 1. SQL, there is criteria of SQL injection defense/countermeasures.
 2. Server apps, there are criteria of XSS protection and vulnerability scans.
