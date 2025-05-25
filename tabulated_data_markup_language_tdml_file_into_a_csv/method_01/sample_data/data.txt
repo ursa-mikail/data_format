@@ -1,0 +1,5 @@
+Name[delimiter]Age[delimiter]Occupation[delimiter]Notes[delimiter]
+John Gray[delimiter]25[delimiter]Engineer[delimiter] [delimiter]
+Jane Doe[delimiter]30[delimiter]Designer[delimiter] This is a an url: [uri_start] https://raw.githubusercontent.com/ursa-mikail/tabulated_data_markup_language_tdml_file_into_a_csv/refs/heads/main/method_01/tdml_file_into_csv.py [uri_end] ok, fetch and see. [delimiter]
+Mark Smith[delimiter]28[delimiter]Data Scientist[delimiter]
+Ursa[delimiter]2[delimiter]Scientist[delimiter] Another url: [uri_start] https://raw.githubusercontent.com/ursa-mikail/toolings/refs/heads/main/python/utilities/readme.md [uri_end] see: readme. [delimiter]
