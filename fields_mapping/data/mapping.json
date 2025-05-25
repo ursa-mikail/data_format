@@ -1,0 +1,19 @@
+{
+  "timestamp": {
+    "target": "event.time",
+    "type": "string"
+  },
+  "log": {
+    "target": "event.message"
+  },
+  "score": {
+    "target": "event.metrics.score",
+    "type": "float"
+  },
+  "reference": {
+    "target": "event.meta.id"
+  },
+  "tags": {
+    "target": "event.labels[]"
+  }
+}

@@ -1,0 +1,16 @@
+[
+  {
+    "event": {
+      "time": "2025-05-18T14:20:01",
+      "message": "Rebooting the system due to unexpected error.",
+      "metrics": {
+        "score": 42.37
+      },
+      "meta": {
+        "id": "48f882a3-7a89-4b8a-ae47-2f6b3d41dbe3"
+      },
+      "labels": ["error", "system", "restart"]
+    }
+  }
+]
+

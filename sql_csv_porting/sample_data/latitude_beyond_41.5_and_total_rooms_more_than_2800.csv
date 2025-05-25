@@ -1,0 +1,2 @@
+longitude,latitude,housing_median_age,total_rooms,total_bedrooms,population,households,median_income,median_house_value,context
+-123.92,41.54,22.0,2920.0,636.0,1382.0,499.0,2.0202,71100.0,Filtered data: latitude > 41.5 and total_rooms > 2800
