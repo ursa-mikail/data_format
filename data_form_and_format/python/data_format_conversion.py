@@ -46,31 +46,55 @@ def generate_random_hex(number_of_hex_bytes):
     """Generate a random hexadecimal string of a given length."""
     return binascii.hexlify(os.urandom(number_of_hex_bytes)).decode()
 
+import base64
+
 def baseN_to_baseN(value: str, from_base: int, to_base: int) -> str:
     """
     Convert a string representation of a number from one base to another.
+    Special case: base64 is treated as base 64 with a custom alphabet.
     :param value: String representation of the number in from_base.
     :param from_base: The base to convert from (e.g., 10).
-    :param to_base: The base to convert to (e.g., 16).
+    :param to_base: The base to convert to (e.g., 64).
     :return: String representation of the number in to_base.
     """
-    # Convert from from_base to decimal (int)
-    decimal_value = int(value, from_base)
+    base64_chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/"
+    
+    def decode_custom_base(value: str, base: int, alphabet: str) -> int:
+        num = 0
+        for char in value:
+            num = num * base + alphabet.index(char)
+        return num
 
-    # Convert from decimal to to_base
-    if to_base == 10:
+    def encode_custom_base(num: int, base: int, alphabet: str) -> str:
+        if num == 0:
+            return alphabet[0]
+        encoded = ''
+        while num > 0:
+            encoded = alphabet[num % base] + encoded
+            num //= base
+        return encoded
+
+    # Decode from input base
+    if from_base == 64:
+        decimal_value = decode_custom_base(value, 64, base64_chars)
+    else:
+        decimal_value = int(value, from_base)
+
+    # Encode to output base
+    if to_base == 64:
+        return encode_custom_base(decimal_value, 64, base64_chars)
+    elif to_base == 10:
         return str(decimal_value)
     elif to_base == 16:
-        return hex(decimal_value)[2:]  # Remove '0x' prefix
+        return hex(decimal_value)[2:]
     elif to_base == 2:
-        return bin(decimal_value)[2:]  # Remove '0b' prefix
+        return bin(decimal_value)[2:]
     elif to_base == 8:
-        return oct(decimal_value)[2:]  # Remove '0o' prefix
+        return oct(decimal_value)[2:]
     else:
-        # General case for base > 1 up to base 36
         digits = "0123456789abcdefghijklmnopqrstuvwxyz"
         if to_base > len(digits):
-            raise ValueError("Base too large, max base supported is 36.")
+            raise ValueError("Base too large, max base supported is 36 (or 64 for base64).")
         result = ""
         while decimal_value > 0:
             result = digits[decimal_value % to_base] + result
@@ -117,19 +141,29 @@ int_big_recovered = baseN_to_baseN(hex_big, 16, 10)
 print(f"baseN_to_baseN(hex_big, 16, 10): {int_big_recovered}")  
 assert int_big_recovered == int_big
 
+# Decimal to Base64
+b64 = baseN_to_baseN(int_big, 10, 64)
+print(f"Decimal to Base64: {b64}")
+
+# Base64 back to Decimal
+int_big_recovered = baseN_to_baseN(b64, 64, 10)
+print(f"Base64 to Decimal: {int_big_recovered}")
+assert int_big_recovered == int_big
+
 """
 ASCII to Hex: 48656c6c6f2c20576f726c6421
 Hex to ASCII: Hello, World!
 ASCII to Bytes: b'Hello, World!'
 Bytes to ASCII: Hello, World!
-Generated Hex: 7aca5f0720b7d37f51304b7d1f1ddfc8f59d3260a7f1cd4057c20d9960278b96d233ed6be74c3a8a8085c3016f122341c4ba9624fdfb9423047f93ee7086c7cf5f1ee1c965a86ee1d5a83e72438b080611e34ce63506397026ef81ac356f6797b95e73c58f771e7a7ff9e2351f9968907ab0dcbacf4f8111bf619e56a561154ac5bb90db57a9919a549fe0488d0e1608ee05a21aa2fa5298e4622cbdbfd15af333ddffe308eecfa606583e39d465984fb487a5bc80026e0d623ed51de8db739693b503ba7f95a740
-Hex to Bytes: b"z\xca_\x07 \xb7\xd3\x7fQ0K}\x1f\x1d\xdf\xc8\xf5\x9d2`\xa7\xf1\xcd@W\xc2\r\x99`'\x8b\x96\xd23\xedk\xe7L:\x8a\x80\x85\xc3\x01o\x12#A\xc4\xba\x96$\xfd\xfb\x94#\x04\x7f\x93\xeep\x86\xc7\xcf_\x1e\xe1\xc9e\xa8n\xe1\xd5\xa8>rC\x8b\x08\x06\x11\xe3L\xe65\x069p&\xef\x81\xac5og\x97\xb9^s\xc5\x8fw\x1ez\x7f\xf9\xe25\x1f\x99h\x90z\xb0\xdc\xba\xcfO\x81\x11\xbfa\x9eV\xa5a\x15J\xc5\xbb\x90\xdbW\xa9\x91\x9aT\x9f\xe0H\x8d\x0e\x16\x08\xee\x05\xa2\x1a\xa2\xfaR\x98\xe4b,\xbd\xbf\xd1Z\xf33\xdd\xff\xe3\x08\xee\xcf\xa6\x06X>9\xd4e\x98O\xb4\x87\xa5\xbc\x80\x02n\rb>\xd5\x1d\xe8\xdbs\x96\x93\xb5\x03\xba\x7f\x95\xa7@"
-Bytes to Hex: 7aca5f0720b7d37f51304b7d1f1ddfc8f59d3260a7f1cd4057c20d9960278b96d233ed6be74c3a8a8085c3016f122341c4ba9624fdfb9423047f93ee7086c7cf5f1ee1c965a86ee1d5a83e72438b080611e34ce63506397026ef81ac356f6797b95e73c58f771e7a7ff9e2351f9968907ab0dcbacf4f8111bf619e56a561154ac5bb90db57a9919a549fe0488d0e1608ee05a21aa2fa5298e4622cbdbfd15af333ddffe308eecfa606583e39d465984fb487a5bc80026e0d623ed51de8db739693b503ba7f95a740
+Generated Hex: 2d40adc0d9997a2209b030a470e53065612b86b0ba1aacb32c6a9e6d5350f8a96ef6134cc22fcbbaf617f00a9326cdd7a23a6530e644ac61103b83fc5f1cdf5149fe3edf7965489fcce2dd012ff69b3861388f247c44de1d68b9973f0a40bb1e608041870ffad6a61d08cdd1c8d1810aa195e0ea07276fc44f69ca430fe2cbd770f899d2aecdde6333544cf58679c66b4e44bbbb5d95f8d2e7f0af9bd52f0aef2395da7e31b40caee296acfd925a884ca2a5b8883bf2d33be69e85157fe4cae4c3958e5fc0eeeab8
+Hex to Bytes: b'-@\xad\xc0\xd9\x99z"\t\xb00\xa4p\xe50ea+\x86\xb0\xba\x1a\xac\xb3,j\x9emSP\xf8\xa9n\xf6\x13L\xc2/\xcb\xba\xf6\x17\xf0\n\x93&\xcd\xd7\xa2:e0\xe6D\xaca\x10;\x83\xfc_\x1c\xdfQI\xfe>\xdfyeH\x9f\xcc\xe2\xdd\x01/\xf6\x9b8a8\x8f$|D\xde\x1dh\xb9\x97?\n@\xbb\x1e`\x80A\x87\x0f\xfa\xd6\xa6\x1d\x08\xcd\xd1\xc8\xd1\x81\n\xa1\x95\xe0\xea\x07\'o\xc4Oi\xcaC\x0f\xe2\xcb\xd7p\xf8\x99\xd2\xae\xcd\xdec3TL\xf5\x86y\xc6kND\xbb\xbb]\x95\xf8\xd2\xe7\xf0\xaf\x9b\xd5/\n\xef#\x95\xda~1\xb4\x0c\xae\xe2\x96\xac\xfd\x92Z\x88L\xa2\xa5\xb8\x88;\xf2\xd3;\xe6\x9e\x85\x15\x7f\xe4\xca\xe4\xc3\x95\x8e_\xc0\xee\xea\xb8'
+Bytes to Hex: 2d40adc0d9997a2209b030a470e53065612b86b0ba1aacb32c6a9e6d5350f8a96ef6134cc22fcbbaf617f00a9326cdd7a23a6530e644ac61103b83fc5f1cdf5149fe3edf7965489fcce2dd012ff69b3861388f247c44de1d68b9973f0a40bb1e608041870ffad6a61d08cdd1c8d1810aa195e0ea07276fc44f69ca430fe2cbd770f899d2aecdde6333544cf58679c66b4e44bbbb5d95f8d2e7f0af9bd52f0aef2395da7e31b40caee296acfd925a884ca2a5b8883bf2d33be69e85157fe4cae4c3958e5fc0eeeab8
 ASCII to Base64: SGVsbG8sIFdvcmxkIQ==
 Base64 to ASCII: Hello, World!
 Bytes to Base64: SGVsbG8sIFdvcmxkIQ==
 Base64 to Bytes: b'Hello, World!'
-
 baseN_to_baseN(int_big, 10, 16): 1b69b4bacd05f15
 baseN_to_baseN(hex_big, 16, 10): 123456789123456789
+Decimal to Base64: G2m0us0F8V
+Base64 to Decimal: 123456789123456789
 """
