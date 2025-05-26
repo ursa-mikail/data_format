@@ -46,6 +46,37 @@ def generate_random_hex(number_of_hex_bytes):
     """Generate a random hexadecimal string of a given length."""
     return binascii.hexlify(os.urandom(number_of_hex_bytes)).decode()
 
+def baseN_to_baseN(value: str, from_base: int, to_base: int) -> str:
+    """
+    Convert a string representation of a number from one base to another.
+    :param value: String representation of the number in from_base.
+    :param from_base: The base to convert from (e.g., 10).
+    :param to_base: The base to convert to (e.g., 16).
+    :return: String representation of the number in to_base.
+    """
+    # Convert from from_base to decimal (int)
+    decimal_value = int(value, from_base)
+
+    # Convert from decimal to to_base
+    if to_base == 10:
+        return str(decimal_value)
+    elif to_base == 16:
+        return hex(decimal_value)[2:]  # Remove '0x' prefix
+    elif to_base == 2:
+        return bin(decimal_value)[2:]  # Remove '0b' prefix
+    elif to_base == 8:
+        return oct(decimal_value)[2:]  # Remove '0o' prefix
+    else:
+        # General case for base > 1 up to base 36
+        digits = "0123456789abcdefghijklmnopqrstuvwxyz"
+        if to_base > len(digits):
+            raise ValueError("Base too large, max base supported is 36.")
+        result = ""
+        while decimal_value > 0:
+            result = digits[decimal_value % to_base] + result
+            decimal_value //= to_base
+        return result or "0"
+
 # Use cases
 
 # 1. Convert ASCII string to hexadecimal and back
@@ -77,6 +108,15 @@ base64_from_bytes = bytes_to_base64(bytes_data)
 print(f"Bytes to Base64: {base64_from_bytes}")  # Output: SGVsbG8sIFdvcmxkIQ==
 print(f"Base64 to Bytes: {base64_to_bytes(base64_from_bytes)}")  # Output: b'Hello, World!'
 
+# Example test: Convert big integer from base 10 to base 16
+int_big = '123456789123456789'
+hex_big = baseN_to_baseN(int_big, 10, 16)
+print(f"baseN_to_baseN(int_big, 10, 16): {hex_big}")  
+
+int_big_recovered = baseN_to_baseN(hex_big, 16, 10)
+print(f"baseN_to_baseN(hex_big, 16, 10): {int_big_recovered}")  
+assert int_big_recovered == int_big
+
 """
 ASCII to Hex: 48656c6c6f2c20576f726c6421
 Hex to ASCII: Hello, World!
@@ -89,4 +129,7 @@ ASCII to Base64: SGVsbG8sIFdvcmxkIQ==
 Base64 to ASCII: Hello, World!
 Bytes to Base64: SGVsbG8sIFdvcmxkIQ==
 Base64 to Bytes: b'Hello, World!'
+
+baseN_to_baseN(int_big, 10, 16): 1b69b4bacd05f15
+baseN_to_baseN(hex_big, 16, 10): 123456789123456789
 """
