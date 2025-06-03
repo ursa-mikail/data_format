@@ -1,0 +1,16 @@
+type: object
+properties:
+  bindings:
+    type: array
+    items:
+      type: object
+      required: [role, members]
+      properties:
+        role:
+          type: string
+        members:
+          type: array
+          items:
+            type: string
+required: [bindings]
+additionalProperties: false
