@@ -13,6 +13,7 @@ print(number_of_columns)
 
 print(df.info())
 print(df.describe())
+# print(df.describe().T)
 
 print(df.head())
 print(df.tail())
