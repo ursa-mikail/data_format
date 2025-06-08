@@ -1,0 +1,13 @@
+%%writefile './sample_data/data.txt'
+**Attributes**[delimiter]**Goals**[delimiter]**Signals**[delimiter]**Metrics**[delimiter]
+**Excitement**[delimiter]Generate positive energy and engagement[delimiter]Activity and energy . High user enthusiasm, viral sharing[delimiter]Frequency and intensity of activities[delimiter]
+**Adoption**[delimiter]Smooth onboarding<br>Low cognitive load[delimiter]Re-use and re-adaptation<br>Low friction usage[delimiter]Number of sessions<br>Feature re-use. Cases and utilities[delimiter]
+**Retention**[delimiter]Users return regularly and stick over time[delimiter]Continued engagement over days/weeks/months[delimiter]Retention rate (7-day, 30-day, etc.)[delimiter]
+**Task Effectiveness**[delimiter]Users complete tasks with minimal effort and error[delimiter]Low error rate<br>Smooth flow[delimiter]Duration<br>Completion rate[delimiter]
+**Clarity**[delimiter]Users understand what to do and why it matters[delimiter]Low need for support<br>Correct self-navigation[delimiter]Fewer support tickets<br>Fewer drop-offs[delimiter]
+**Trust**[delimiter]Users feel safe, respected, and informed[delimiter]Transparent communication<br>Positive sentiment[delimiter]Trust score (survey)<br>Fewer opt-outs[delimiter]
+**Delight**[delimiter]Users experience moments of joy or surprise[delimiter]Positive emotional responses<br>Spontaneous praise[delimiter]NPS (Net Promoter Score)<br>User quotes[delimiter]
+**Efficiency**[delimiter]Users accomplish goals faster and easier over time[delimiter]Task automation<br>Learning curve flattening[delimiter]Average time to complete<br>Error reduction[delimiter]
+**Accessibility**[delimiter]Inclusive use by people with diverse abilities and contexts[delimiter]Compatibility with screen readers, input methods, etc.[delimiter]WCAG compliance<br>Accessibility audit scores[delimiter]
+**Scalability**[delimiter]System grows with usage without degrading experience[delimiter]Consistent performance under load[delimiter]Uptime<br>Latency under high load[delimiter]
+**Consistency**[delimiter]Interface and interaction behave the same across flows[delimiter]Predictable outcomes<br>No surprises[delimiter]Usability test scores<br>User confidence[delimiter]
